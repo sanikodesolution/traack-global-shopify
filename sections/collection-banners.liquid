@@ -1,0 +1,216 @@
+{{ 'section-collection-banners.css' | asset_url | stylesheet_tag }}
+
+<div class="collection-banners-section" id="collection-banners-{{ section.id }}" style="
+  --heading-color: {{ section.settings.heading_color }};
+  --overlay-color: {{ section.settings.overlay_color }};
+  --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  --label-color: {{ section.settings.label_color }};
+  --button-bg: {{ section.settings.button_bg_color }};
+  --button-text: {{ section.settings.button_text_color }};
+  --section-bg: {{ section.settings.section_bg_color }};
+  --gap: {{ section.settings.gap_size }}px;
+  padding-top: {{ section.settings.padding_top }}px;
+  padding-bottom: {{ section.settings.padding_bottom }}px;
+  background-color: var(--section-bg);
+">
+  <div class="collection-banners-container">
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="collection-banners-heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="collection-banners-grid" style="--columns: {{ section.blocks.size }};">
+      {%- for block in section.blocks -%}
+        {%- assign img = block.settings.image -%}
+        <div class="collection-banner-item" {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.link | default: '#' }}" class="collection-banner-link">
+            {%- if img != blank -%}
+              <img
+                src="{{ img | image_url: width: 1200 }}"
+                srcset="
+                  {{ img | image_url: width: 300 }} 300w,
+                  {{ img | image_url: width: 600 }} 600w,
+                  {{ img | image_url: width: 900 }} 900w,
+                  {{ img | image_url: width: 1200 }} 1200w
+                "
+                sizes="(max-width: 768px) 100vw, 50vw"
+                width="{{ img.width }}"
+                height="{{ img.height }}"
+                alt="{{ img.alt | default: block.settings.title | escape }}"
+                loading="lazy"
+                class="collection-banner-image"
+              >
+            {%- else -%}
+              <div class="collection-banner-placeholder">
+                {{ 'collection-1' | placeholder_svg_tag: 'collection-banner-placeholder-svg' }}
+              </div>
+            {%- endif -%}
+
+            <div class="collection-banner-overlay"></div>
+
+            <div class="collection-banner-content">
+              {%- if block.settings.title != blank -%}
+                <h6 class="collection-banner-title">{{ block.settings.title }}</h6>
+              {%- endif -%}
+              {%- if block.settings.button_label != blank -%}
+                <span class="collection-banner-button">{{ block.settings.button_label }}</span>
+              {%- endif -%}
+            </div>
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Banners",
+  "tag": "section",
+  "class": "shopify-section-collection-banners",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Choose Your Favorite Collection"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "gap_size",
+      "label": "Gap between banners",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Image overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Banner title color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#1a1a1a"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Collection Banner",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "COLLECTION NAME"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Banners",
+      "blocks": [
+        {
+          "type": "banner",
+          "settings": {
+            "title": "GRAND LITERUS COLLECTION",
+            "button_label": "Shop Now"
+          }
+        },
+        {
+          "type": "banner",
+          "settings": {
+            "title": "MARVEL COLLECTION",
+            "button_label": "Shop Now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

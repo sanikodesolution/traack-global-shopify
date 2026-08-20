@@ -269,10 +269,10 @@
       }
 
       rtwTab.addEventListener('click', function () {
-        setMode('rtw');
+        setMode(mode === 'rtw' ? null : 'rtw');
       });
       bespokeTab.addEventListener('click', function () {
-        setMode('bespoke');
+        setMode(mode === 'bespoke' ? null : 'bespoke');
       });
 
       if (cartForm) {

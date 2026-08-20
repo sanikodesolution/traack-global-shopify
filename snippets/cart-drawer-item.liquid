@@ -21,15 +21,24 @@
       </a>
 
       <div class="m-cart-drawer-item__variant m:text-color-subtext">
+        {%- liquid
+          assign is_fully_bespoke_line = false
+          if item.properties['Size Type'] == 'Fully Bespoke'
+            assign is_fully_bespoke_line = true
+          endif
+        -%}
         {%- unless item.product.has_only_default_variant -%}
           {%- for option in item.options_with_values -%}
-            <p class="m-cart-item__option m:text-sm">
-              <span class="m:font-medium">
-                {{- option.name -}}
-                :
-              </span>
-              {{- option.value -}}
-            </p>
+            {%- assign option_name_downcase = option.name | downcase -%}
+            {%- unless is_fully_bespoke_line and option_name_downcase contains 'size' -%}
+              <p class="m-cart-item__option m:text-sm">
+                <span class="m:font-medium">
+                  {{- option.name -}}
+                  :
+                </span>
+                {{- option.value -}}
+              </p>
+            {%- endunless -%}
           {%- endfor -%}
         {%- endunless -%}
         {% comment %}Properties{% endcomment %}

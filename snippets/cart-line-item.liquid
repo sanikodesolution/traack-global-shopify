@@ -41,6 +41,10 @@
           if item.product.has_only_default_variant != true
             assign variant_options = item.options_with_values
           endif
+          assign is_fully_bespoke_line = false
+          if item.properties['Size Type'] == 'Fully Bespoke'
+            assign is_fully_bespoke_line = true
+          endif
           assign property_size = item.properties | size
 
           assign line_item_detail_class = ''
@@ -54,12 +58,15 @@
           aria-label="{{ 'cart.label.product_details' | t }}"
         >
           {%- for option in variant_options -%}
-            <li
-              class="m-cart-item__option m:text-sm{% if item.product.has_only_default_variant %} m:hidden{% endif %}"
-              data-cart-item-option
-            >
-              <span class="m:font-medium">{{ option.name }}</span>: {{ option.value }}
-            </li>
+            {%- assign option_name_downcase = option.name | downcase -%}
+            {%- unless is_fully_bespoke_line and option_name_downcase contains 'size' -%}
+              <li
+                class="m-cart-item__option m:text-sm{% if item.product.has_only_default_variant %} m:hidden{% endif %}"
+                data-cart-item-option
+              >
+                <span class="m:font-medium">{{ option.name }}</span>: {{ option.value }}
+              </li>
+            {%- endunless -%}
           {%- endfor -%}
 
           <li

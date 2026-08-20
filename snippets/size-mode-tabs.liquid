@@ -1,0 +1,301 @@
+{%- liquid
+  if product_form_id == blank
+    assign product_form_id = 'product-form-' | append: section.id
+  endif
+-%}
+
+<div
+  id="size-mode-tabs-{{ section.id }}"
+  class="size-mode-tabs"
+  data-section-id="{{ section.id }}"
+  data-product-form-id="{{ product_form_id }}"
+>
+  <div class="size-mode-tabs__row" role="tablist" aria-label="Size mode">
+    <span class="size-mode-tabs__prefix">Size:</span>
+    <button
+      type="button"
+      class="size-mode-tabs__tab"
+      data-size-mode="rtw"
+      role="tab"
+      aria-selected="false"
+    >
+      Ready To Wear
+    </button>
+    <button
+      type="button"
+      class="size-mode-tabs__tab"
+      data-size-mode="bespoke"
+      role="tab"
+      aria-selected="false"
+    >
+      Bespoke
+    </button>
+  </div>
+
+  <div
+    class="size-mode-tabs__bespoke"
+    data-size-mode-bespoke
+    hidden
+  >
+    <div class="size-mode-tabs__panel">
+      <label for="bespoke-size-{{ section.id }}">please write here your shoe size normaly, which size shoes you wear</label>
+      <textarea
+        id="bespoke-size-{{ section.id }}"
+        name="properties[Custom Size / Measurement]"
+        form="{{ product_form_id }}"
+        rows="3"
+        placeholder="e.g., EU 42, US 9, UK 8"
+        disabled
+        data-bespoke-size
+      ></textarea>
+
+      <label for="bespoke-contact-{{ section.id }}">Please enter your email or whatsapp number</label>
+      <input
+        type="text"
+        id="bespoke-contact-{{ section.id }}"
+        name="properties[Contact (Email / WhatsApp)]"
+        form="{{ product_form_id }}"
+        disabled
+        data-bespoke-contact
+      >
+
+      <input
+        type="hidden"
+        name="properties[Size Type]"
+        form="{{ product_form_id }}"
+        value=""
+        id="bespoke-type-{{ section.id }}"
+        data-bespoke-type
+        disabled
+      >
+
+      <p class="size-mode-tabs__hint">
+        (it's best if you put your WhatsApp number) so that our representative will contact you to do the perfect measurement of your feet. We make every pair of shoes to the exact measurements of our client's feet. We use only the best quality materials and bespoke construction at a real price.)
+      </p>
+    </div>
+
+    <div class="size-mode-tabs__info">
+      <p>
+        After taking precise measurements of your feet, we create a custom wooden last crafted exclusively for your unique foot shape and dimensions. This personalized last ensures every pair is made to your exact specifications for an exceptional fit.
+      </p>
+      <p>
+        We offer 100% true bespoke footwear—never semi-bespoke. Every pair is individually handcrafted from the ground up, using your personal last, delivering unmatched fit, comfort, elegance, and craftsmanship.
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  #size-mode-tabs-{{ section.id }} {
+    width: 100%;
+    margin: 0 0 12px;
+    font-family: inherit;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__prefix {
+    font-size: 14px;
+    font-weight: 500;
+    color: inherit;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__tab {
+    display: inline-block;
+    white-space: nowrap;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: transparent;
+    color: #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__tab:hover {
+    border-color: #ffffff;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__tab.is-active {
+    border-color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__bespoke {
+    margin-top: 14px;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__panel {
+    margin-top: 0;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__panel label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__panel textarea,
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__panel input[type='text'] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 14px;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__panel textarea:focus,
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__panel input[type='text']:focus {
+    outline: none;
+    border-color: #ffffff;
+    background: #222222;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__hint {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__info {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__info p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0 0 8px;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__info p:first-child {
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  #size-mode-tabs-{{ section.id }} .size-mode-tabs__info p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Hide the original size option label row; tabs replace it */
+  .m-product-option--size-mode > :is(variant-select, variant-color, variant-image, variant-button) > .m-product-option--label {
+    display: none !important;
+  }
+</style>
+
+<script>
+  (function () {
+    function initSizeModeTabs() {
+      var root = document.getElementById('size-mode-tabs-{{ section.id }}');
+      if (!root || root.dataset.ready === 'true') return;
+
+      var sectionId = root.dataset.sectionId;
+      var formId = root.dataset.productFormId || ('product-form-' + sectionId);
+      var cartForm = document.getElementById(formId);
+      var rtwTab = root.querySelector('[data-size-mode="rtw"]');
+      var bespokeTab = root.querySelector('[data-size-mode="bespoke"]');
+      var bespokeWrap = root.querySelector('[data-size-mode-bespoke]');
+      var sizeField = root.querySelector('[data-bespoke-size]');
+      var contactField = root.querySelector('[data-bespoke-contact]');
+      var typeField = root.querySelector('[data-bespoke-type]');
+
+      var optionRoot = root.closest('.m-product-option--size-mode');
+      var sizeContent = optionRoot
+        ? optionRoot.querySelector('[data-size-mode-content]')
+        : null;
+
+      if (!rtwTab || !bespokeTab || !bespokeWrap) return;
+      root.dataset.ready = 'true';
+
+      var mode = null; // null | 'rtw' | 'bespoke'
+
+      function setMode(next) {
+        mode = next;
+
+        rtwTab.classList.toggle('is-active', mode === 'rtw');
+        bespokeTab.classList.toggle('is-active', mode === 'bespoke');
+        rtwTab.setAttribute('aria-selected', mode === 'rtw' ? 'true' : 'false');
+        bespokeTab.setAttribute('aria-selected', mode === 'bespoke' ? 'true' : 'false');
+
+        if (sizeContent) {
+          sizeContent.style.display = mode === 'rtw' ? '' : 'none';
+        }
+
+        var bespokeOn = mode === 'bespoke';
+        bespokeWrap.hidden = !bespokeOn;
+
+        if (sizeField) {
+          sizeField.disabled = !bespokeOn;
+          if (bespokeOn) sizeField.setAttribute('required', 'required');
+          else {
+            sizeField.removeAttribute('required');
+            sizeField.value = '';
+          }
+        }
+        if (contactField) {
+          contactField.disabled = !bespokeOn;
+          if (bespokeOn) contactField.setAttribute('required', 'required');
+          else {
+            contactField.removeAttribute('required');
+            contactField.value = '';
+          }
+        }
+        if (typeField) {
+          typeField.disabled = !bespokeOn;
+          typeField.value = bespokeOn ? 'Fully Bespoke' : '';
+        }
+      }
+
+      rtwTab.addEventListener('click', function () {
+        setMode('rtw');
+      });
+      bespokeTab.addEventListener('click', function () {
+        setMode('bespoke');
+      });
+
+      if (cartForm) {
+        cartForm.addEventListener('submit', function (e) {
+          if (mode !== 'bespoke') return;
+          if (!sizeField || !contactField) return;
+          if (!sizeField.value.trim() || !contactField.value.trim()) {
+            e.preventDefault();
+            alert('Please enter your custom size and Email/WhatsApp number.');
+          }
+        });
+      }
+
+      /* Default: both closed */
+      setMode(null);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSizeModeTabs);
+    } else {
+      initSizeModeTabs();
+    }
+
+    document.addEventListener('shopify:section:load', initSizeModeTabs);
+  })();
+</script>

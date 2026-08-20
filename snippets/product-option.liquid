@@ -62,13 +62,13 @@
         assign picker_type = picker_types[forloop.index0]
         assign option_label = option_labels[forloop.index0]
         assign option_name_downcase = option.name | downcase
-        if size_title_downcase contains option_name_downcase
+        if size_title_downcase contains option_name_downcase or option_name_downcase contains size_title_downcase
           assign is_size = true
         else
           assign is_size = false
         endif
       %}
-      <div class="m-product-option m-product-option--{{ picker_type }}">
+      <div class="m-product-option m-product-option--{{ picker_type }}{% if is_size %} m-product-option--size-mode{% endif %}">
         {%- case picker_type -%}
           {% when 'dropdown' %}
             <variant-select
@@ -78,8 +78,8 @@
             >
               <div class="m-product-option--label">
                 <label class="option-label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
-                  <span class="option-label--title">{{ option_label }}:</span>
-                  <span class="option-label--selected">{{ option.selected_value }}</span>
+                  <span class="option-label--title">{% if is_size %}Size{% else %}{{ option_label }}{% endif %}:</span>
+                  {% unless is_size %}<span class="option-label--selected">{{ option.selected_value }}</span>{% endunless %}
                 </label>
                 {% if is_size %}
                   <button data-open-sizeguide class="foxkit-sizechart-button m:inline-flex m:items-center m:hidden">
@@ -96,7 +96,16 @@
                   </button>
                 {% endif %}
               </div>
-              <div class="m-product-option--content">
+              {% if is_size %}
+                {% render 'size-mode-tabs', section: section, product_form_id: product_form_id %}
+              {% endif %}
+              <div
+                class="m-product-option--content"
+                {% if is_size %}
+                  data-size-mode-content
+                  style="display: none;"
+                {% endif %}
+              >
                 <div class="m:inline-flex m:flex-wrap">
                   <select
                     id="Option-{{ section.id }}-{{ forloop.index0 }}"
@@ -129,8 +138,8 @@
             >
               <div class="m-product-option--label">
                 <label class="option-label">
-                  <span class="option-label--title">{{ option_label }}:</span>
-                  <span class="option-label--selected">{{ option.selected_value }}</span>
+                  <span class="option-label--title">{% if is_size %}Size{% else %}{{ option_label }}{% endif %}:</span>
+                  {% unless is_size %}<span class="option-label--selected">{{ option.selected_value }}</span>{% endunless %}
                 </label>
                 {% if is_size %}
                   <button data-open-sizeguide class="foxkit-sizechart-button m:inline-flex m:items-center m:hidden">
@@ -147,7 +156,16 @@
                   </button>
                 {% endif %}
               </div>
-              <div class="m-product-option--content m:inline-flex m:flex-wrap">
+              {% if is_size %}
+                {% render 'size-mode-tabs', section: section, product_form_id: product_form_id %}
+              {% endif %}
+              <div
+                class="m-product-option--content m:inline-flex m:flex-wrap"
+                {% if is_size %}
+                  data-size-mode-content
+                  style="display: none;"
+                {% endif %}
+              >
                 {%- for value in option.values -%}
                   <div
                     class="m-product-option--node m-tooltip m-tooltip--top"
@@ -190,8 +208,8 @@
             >
               <div class="m-product-option--label">
                 <label class="option-label">
-                  <span class="option-label--title">{{ option_label }}:</span>
-                  <span class="option-label--selected">{{ option.selected_value }}</span>
+                  <span class="option-label--title">{% if is_size %}Size{% else %}{{ option_label }}{% endif %}:</span>
+                  {% unless is_size %}<span class="option-label--selected">{{ option.selected_value }}</span>{% endunless %}
                 </label>
                 {% if is_size %}
                   <button data-open-sizeguide class="foxkit-sizechart-button m:inline-flex m:items-center m:hidden">
@@ -208,7 +226,16 @@
                   </button>
                 {% endif %}
               </div>
-              <div class="m-product-option--content m:inline-flex m:flex-wrap">
+              {% if is_size %}
+                {% render 'size-mode-tabs', section: section, product_form_id: product_form_id %}
+              {% endif %}
+              <div
+                class="m-product-option--content m:inline-flex m:flex-wrap"
+                {% if is_size %}
+                  data-size-mode-content
+                  style="display: none;"
+                {% endif %}
+              >
                 {%- for value in option.values -%}
                   <div
                     class="m-product-option--node m-tooltip m-tooltip--top"
@@ -249,8 +276,8 @@
             >
               <div class="m-product-option--label">
                 <label class="option-label">
-                  <span class="option-label--title">{{ option_label }}:</span>
-                  <span class="option-label--selected">{{ option.selected_value }}</span>
+                  <span class="option-label--title">{% if is_size %}Size{% else %}{{ option_label }}{% endif %}:</span>
+                  {% unless is_size %}<span class="option-label--selected">{{ option.selected_value }}</span>{% endunless %}
                 </label>
                 {% if is_size %}
                   <button data-open-sizeguide class="foxkit-sizechart-button m:inline-flex m:items-center m:hidden">
@@ -267,7 +294,16 @@
                   </button>
                 {% endif %}
               </div>
-              <div class="m-product-option--content m:inline-flex m:flex-wrap">
+              {% if is_size %}
+                {% render 'size-mode-tabs', section: section, product_form_id: product_form_id %}
+              {% endif %}
+              <div
+                class="m-product-option--content m:inline-flex m:flex-wrap"
+                {% if is_size %}
+                  data-size-mode-content
+                  style="display: none;"
+                {% endif %}
+              >
                 {%- for value in option.values -%}
                   <div
                     class="m-product-option--node"
@@ -304,8 +340,8 @@
             >
               <div class="m-product-option--label">
                 <label class="option-label">
-                  <span class="option-label--title">{{ option_label }}:</span>
-                  <span class="option-label--selected">{{ option.selected_value }}</span>
+                  <span class="option-label--title">{% if is_size %}Size{% else %}{{ option_label }}{% endif %}:</span>
+                  {% unless is_size %}<span class="option-label--selected">{{ option.selected_value }}</span>{% endunless %}
                 </label>
                 {% if is_size %}
                   <button data-open-sizeguide class="foxkit-sizechart-button m:inline-flex m:items-center m:hidden">
@@ -322,7 +358,16 @@
                   </button>
                 {% endif %}
               </div>
-              <div class="m-product-option--content m:inline-flex m:flex-wrap">
+              {% if is_size %}
+                {% render 'size-mode-tabs', section: section, product_form_id: product_form_id %}
+              {% endif %}
+              <div
+                class="m-product-option--content m:inline-flex m:flex-wrap"
+                {% if is_size %}
+                  data-size-mode-content
+                  style="display: none;"
+                {% endif %}
+              >
                 {%- for value in option.values -%}
                   <div
                     class="m-product-option--node m-tooltip m-tooltip--top"

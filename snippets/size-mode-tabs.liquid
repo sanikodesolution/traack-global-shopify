@@ -86,6 +86,27 @@
       </p>
     </div>
   </div>
+
+  <div
+    class="size-mode-tabs__rtw-contact"
+    data-size-mode-rtw-contact
+    hidden
+  >
+    <div class="size-mode-tabs__panel">
+      <label for="rtw-contact-{{ section.id }}">Please enter your email or whatsapp number</label>
+      <input
+        type="text"
+        id="rtw-contact-{{ section.id }}"
+        name="properties[Contact (Email / WhatsApp)]"
+        form="{{ product_form_id }}"
+        disabled
+        data-rtw-contact
+      >
+      <p class="size-mode-tabs__hint">
+        (it's best if you put your WhatsApp number) so that our representative will contact you to do the perfect measurement of your feet. We make every pair of shoes to the exact measurements of our client's feet. We use only the best quality materials and bespoke construction at a real price.)
+      </p>
+    </div>
+  </div>
 </div>
 
 <style>
@@ -202,6 +223,57 @@
     margin-bottom: 0;
   }
 
+  .m-product-option--size-mode .size-mode-tabs__rtw-contact {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    flex: 0 0 100%;
+  }
+
+  .m-product-option--size-mode .size-mode-tabs__rtw-contact[hidden] {
+    display: none !important;
+  }
+
+  .m-product-option--size-mode .size-mode-tabs__rtw-contact .size-mode-tabs__panel {
+    margin-top: 0;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .m-product-option--size-mode .size-mode-tabs__rtw-contact .size-mode-tabs__panel label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+
+  .m-product-option--size-mode .size-mode-tabs__rtw-contact .size-mode-tabs__panel input[type='text'] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 14px;
+  }
+
+  .m-product-option--size-mode .size-mode-tabs__rtw-contact .size-mode-tabs__panel input[type='text']:focus {
+    outline: none;
+    border-color: #ffffff;
+    background: #222222;
+  }
+
+  .m-product-option--size-mode .size-mode-tabs__rtw-contact .size-mode-tabs__hint {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0;
+  }
+
   /* Hide the original size option label row; tabs replace it */
   .m-product-option--size-mode > :is(variant-select, variant-color, variant-image, variant-button) > .m-product-option--label {
     display: none !important;
@@ -222,6 +294,8 @@
       var bespokeWrap = root.querySelector('[data-size-mode-bespoke]');
       var sizeField = root.querySelector('[data-bespoke-size]');
       var contactField = root.querySelector('[data-bespoke-contact]');
+      var rtwContactWrap = root.querySelector('[data-size-mode-rtw-contact]');
+      var rtwContactField = root.querySelector('[data-rtw-contact]');
       var typeField = root.querySelector('[data-bespoke-type]');
 
       var optionRoot = root.closest('.m-product-option--size-mode');
@@ -232,9 +306,19 @@
       if (!rtwTab || !bespokeTab || !bespokeWrap) return;
       root.dataset.ready = 'true';
 
+      if (sizeContent && rtwContactWrap && rtwContactWrap.parentNode !== sizeContent.parentNode) {
+        sizeContent.insertAdjacentElement('afterend', rtwContactWrap);
+      }
+
       var mode = null; // null | 'rtw' | 'bespoke'
 
+      function syncContactValue(fromField, toField) {
+        if (!fromField || !toField) return;
+        toField.value = fromField.value;
+      }
+
       function setMode(next) {
+        var prev = mode;
         mode = next;
 
         rtwTab.classList.toggle('is-active', mode === 'rtw');
@@ -247,7 +331,15 @@
         }
 
         var bespokeOn = mode === 'bespoke';
+        var rtwOn = mode === 'rtw';
         bespokeWrap.hidden = !bespokeOn;
+        if (rtwContactWrap) rtwContactWrap.hidden = !rtwOn;
+
+        if (prev === 'bespoke' && mode === 'rtw') {
+          syncContactValue(contactField, rtwContactField);
+        } else if (prev === 'rtw' && mode === 'bespoke') {
+          syncContactValue(rtwContactField, contactField);
+        }
 
         if (sizeField) {
           sizeField.disabled = !bespokeOn;
@@ -260,10 +352,10 @@
         if (contactField) {
           contactField.disabled = !bespokeOn;
           if (bespokeOn) contactField.setAttribute('required', 'required');
-          else {
-            contactField.removeAttribute('required');
-            contactField.value = '';
-          }
+          else contactField.removeAttribute('required');
+        }
+        if (rtwContactField) {
+          rtwContactField.disabled = !rtwOn;
         }
         if (typeField) {
           typeField.disabled = !bespokeOn;
